@@ -8,7 +8,7 @@ from transformers import PreTrainedTokenizer
 
 from mflux.models.common.tokenizer.tokenizer_output import TokenizerOutput
 
-
+import json
 @runtime_checkable
 class Tokenizer(Protocol):
     tokenizer: PreTrainedTokenizer
@@ -84,12 +84,23 @@ class LanguageTokenizer(BaseTokenizer):
                 if self.template:
                     formatted = self.template.format(p)
                 elif self.use_chat_template:
-                    formatted = self.tokenizer.apply_chat_template(
-                        [{"role": "user", "content": p}],
-                        tokenize=False,
-                        add_generation_prompt=True,
-                        **self.chat_template_kwargs,
-                    )
+                    try:
+                        prompt_dict = json.loads(p)
+                        real_prompts = [{"role":"systen","content":prompt_dict['system']}, {"role":"user","content":prompt_dict["user"]}]
+                        formatted = self.tokenizer.apply_chat_template(
+                            real_prompts,
+                            tokenize=False,
+                            add_generation_prompt=True,
+                            **self.chat_template_kwargs,
+                        )
+                    except:
+                        print(f"prompt template wrong:{p}")
+                        formatted = self.tokenizer.apply_chat_template(
+                            [{"role": "user", "content": p}],
+                            tokenize=False,
+                            add_generation_prompt=True,
+                            **self.chat_template_kwargs,
+                        )
                 else:
                     formatted = p
                 formatted_prompts.append(formatted)

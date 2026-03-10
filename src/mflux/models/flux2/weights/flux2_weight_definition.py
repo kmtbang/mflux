@@ -38,7 +38,7 @@ class Flux2KleinWeightDefinition:
                 hf_subdir="tokenizer",
                 tokenizer_class="Qwen2TokenizerFast",
                 encoder_class=LanguageTokenizer,
-                max_length=512,
+                max_length=1024,
                 use_chat_template=True,
                 chat_template_kwargs={"enable_thinking": False},
                 download_patterns=["tokenizer/**", "added_tokens.json", "chat_template.jinja"],
