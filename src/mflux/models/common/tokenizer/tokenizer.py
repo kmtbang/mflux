@@ -86,6 +86,7 @@ class LanguageTokenizer(BaseTokenizer):
                 elif self.use_chat_template:
                     try:
                         prompt_dict = json.loads(p.decode("utf-8"))
+                        print(f"prompt_dict:{prompt_dict}")
                         real_prompts = [{"role":"system","content":prompt_dict['system']}, {"role":"user","content":prompt_dict["user"]}]
                         formatted = self.tokenizer.apply_chat_template(
                             real_prompts,
@@ -93,8 +94,9 @@ class LanguageTokenizer(BaseTokenizer):
                             add_generation_prompt=True,
                             **self.chat_template_kwargs,
                         )
-                    except:
+                    except Exception as e:
                         print(f"prompt template wrong:{p}")
+                        print(f"exception:{e}")
                         formatted = self.tokenizer.apply_chat_template(
                             [{"role": "user", "content": p}],
                             tokenize=False,
