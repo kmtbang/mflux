@@ -86,7 +86,7 @@ class LanguageTokenizer(BaseTokenizer):
                 elif self.use_chat_template:
                     try:
                         prompt_dict = json.loads(p.decode("utf-8"))
-                        real_prompts = [{"role":"systen","content":prompt_dict['system']}, {"role":"user","content":prompt_dict["user"]}]
+                        real_prompts = [{"role":"system","content":prompt_dict['system']}, {"role":"user","content":prompt_dict["user"]}]
                         formatted = self.tokenizer.apply_chat_template(
                             real_prompts,
                             tokenize=False,
