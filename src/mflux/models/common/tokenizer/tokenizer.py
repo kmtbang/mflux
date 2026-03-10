@@ -190,9 +190,9 @@ class VisionLanguageTokenizer(BaseTokenizer):
                     formatted_text = p
         else:
             formatted_text = prompt[0]
-
         pixel_values = None
         image_grid_thw = None
+        print(f"formatted:{max_length},{formatted_text}")
 
         if images:
             model_inputs = self.processor(
@@ -214,6 +214,7 @@ class VisionLanguageTokenizer(BaseTokenizer):
                 truncation=True,
                 return_tensors="np",
             )
+            
             input_ids = mx.array(tokens["input_ids"])
             attention_mask = mx.array(tokens["attention_mask"])
 
