@@ -118,7 +118,8 @@ class LanguageTokenizer(BaseTokenizer):
             return_overflowing_tokens=True,
             return_tensors="np",
         )
-        overflow = tokens["num_truncated_tokens"]
+        print(f"keys:{tokens.keys()}")        
+        overflow = len(tokens["input_ids"][0])
         print(f"overflow:{overflow},{max_length}")
         input_ids = mx.array(tokens["input_ids"])
         if self.return_attention_mask:
