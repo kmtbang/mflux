@@ -118,8 +118,8 @@ class LanguageTokenizer(BaseTokenizer):
             return_overflowing_tokens=False,
             return_tensors="np",
         )
-        p_cnt = len(tokens["input_ids"])
-        print(f"input len:{p_cnt}")
+        p_cnt = len(tokens["input_ids"][0])
+        print(f"input len:{p_cnt},{max_length}")
         input_ids = mx.array(tokens["input_ids"])
         if self.return_attention_mask:
             attention_mask = mx.array(tokens["attention_mask"])
