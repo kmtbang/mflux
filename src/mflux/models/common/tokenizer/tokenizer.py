@@ -118,7 +118,7 @@ class LanguageTokenizer(BaseTokenizer):
             return_overflowing_tokens=False,
             return_tensors="np",
         )
-
+        print(f"input len:{len(tokens["input_ids"])}")
         input_ids = mx.array(tokens["input_ids"])
         if self.return_attention_mask:
             attention_mask = mx.array(tokens["attention_mask"])
