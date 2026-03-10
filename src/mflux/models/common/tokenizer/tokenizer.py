@@ -158,14 +158,36 @@ class VisionLanguageTokenizer(BaseTokenizer):
 
         if isinstance(prompt, str):
             prompt = [prompt]
-
-        if self.template and images:
+        if images:
             img_prompt = ""
             for i in range(len(images)):
                 img_prompt += f"Picture {i + 1}: <|vision_start|>{self.image_token}<|vision_end|>"
+        if self.template and images:
             formatted_text = self.template.format(img_prompt + prompt[0])
         elif self.template:
             formatted_text = self.template.format(prompt[0])
+        elif self.use_chat_template:
+            try:
+                p = prompt[0]
+                prompt_dict = json.loads(p)
+                print(f"prompt_dict:{prompt_dict}")
+                if images:
+                    real_prompts = [{"role":"system","content":prompt_dict['system']}, {"role":"user","content":img_prompt + prompt_dict["user"]}]
+                else:
+                    real_prompts = [{"role":"system","content":prompt_dict['system']}, {"role":"user","content":prompt_dict["user"]}]
+                formatted_text = self.tokenizer.apply_chat_template(
+                    real_prompts,
+                    tokenize=False,
+                    add_generation_prompt=True,
+                    **self.chat_template_kwargs,
+                )
+            except Exception as e:
+                print(f"prompt template wrong:{p}")
+                print(f"exception:{e}")
+                if images:
+                    formatted_text = img_prompt + p
+                else:
+                    formatted_text = p
         else:
             formatted_text = prompt[0]
 
