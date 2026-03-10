@@ -111,8 +111,8 @@ class LanguageTokenizer(BaseTokenizer):
         tokens = self.tokenizer(
             prompts,
             padding=self.padding,
-            max_length=max_length,
-            truncation=True,
+            max_length=-1,#max_length,
+            truncation=False,#True,
             add_special_tokens=self.add_special_tokens,
             return_length=False,
             return_overflowing_tokens=False,
