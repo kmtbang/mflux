@@ -73,7 +73,7 @@ class QwenVisionLanguageProcessor:
                 padding=padding,
                 return_tensors="pt" if return_tensors == "pt" else "np",
             )
-            print(f"qwen processor:{text}")
+            print(f"qwen processor:{text},{self.tokenizer.max_length},{padding}")
             if return_tensors == "pt":
                 import torch
 
