@@ -45,8 +45,8 @@ class QwenWeightDefinition:
                 padding="longest",
 #                template="<|im_start|>system\nDescribe the image by detailing the color, shape, size, texture, quantity, text, spatial relationships of the objects and background:<|im_end|>\n<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n",
 #                download_patterns=["tokenizer/**", "added_tokens.json", "chat_template.jinja"],
-                use_chat_template=True,
-                chat_template_kwargs={"enable_thinking": False},
+                use_chat_template=False,
+#                chat_template_kwargs={"enable_thinking": False},
                 download_patterns=["tokenizer/**", "added_tokens.json", "chat_template.jinja"],
 
             ),
