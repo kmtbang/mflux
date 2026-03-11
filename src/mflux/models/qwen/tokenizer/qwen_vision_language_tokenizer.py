@@ -5,7 +5,7 @@ from typing import Union
 import mlx.core as mx
 import numpy as np
 from PIL import Image
-
+import json
 from mflux.models.qwen.tokenizer.qwen_vision_language_processor import QwenVisionLanguageProcessor
 
 
@@ -43,6 +43,22 @@ class QwenVisionLanguageTokenizer:
                 "<|im_start|>assistant\n"
             )
         self.edit_template_start_idx = 64
+        if use_picture_prefix:
+            self.edit_template_json = (
+                "<|im_start|>system\n"
+                "{system}<|im_end|>\n"
+                "<|im_start|>user\n"
+                "{user}<|im_end|>\n"
+                "<|im_start|>assistant\n"
+            )
+        else:
+            self.edit_template_json = (
+                "<|im_start|>system\n"
+                "{system}<|im_end|>\n"
+                "<|im_start|>user\n"
+                "<|vision_start|><|image_pad|><|vision_end|>{user}<|im_end|>\n"
+                "<|im_start|>assistant\n"
+            )
 
     def tokenize_with_image(
         self,
@@ -56,20 +72,31 @@ class QwenVisionLanguageTokenizer:
             images = [image]
         else:
             images = image
+        try:
+            prompt_dict = json.loads(prompt)
+            if self.use_picture_prefix:
+                img_prompt_template = "Picture {}: <|vision_start|><|image_pad|><|vision_end|>"
+                base_img_prompt = ""
+                for i in range(len(images)):
+                    base_img_prompt += img_prompt_template.format(i + 1)
+                formatted_text = self.edit_template_json.format(system=prompt_dict["system"],user=base_img_prompt + prompt_dict["user"])
+            else:
+                formatted_text = self.edit_template_json.format(system=prompt_dict["system"],user=prompt_dict["user"])
 
-        # Format prompt based on tokenizer mode
-        if self.use_picture_prefix:
-            # Edit format: Add "Picture N:" prefix for each image
-            # For multiple images: "Picture 1: ... Picture 2: ... Picture N: ..."
-            img_prompt_template = "Picture {}: <|vision_start|><|image_pad|><|vision_end|>"
-            base_img_prompt = ""
-            for i in range(len(images)):
-                base_img_prompt += img_prompt_template.format(i + 1)
-            formatted_text = self.edit_template.format(base_img_prompt + prompt)
-        else:
-            # Regular Edit format: Vision tokens already in template
-            # Just format with user prompt directly
-            formatted_text = self.edit_template.format(prompt)
+        except Exception as e:
+            # Format prompt based on tokenizer mode
+            if self.use_picture_prefix:
+                # Edit format: Add "Picture N:" prefix for each image
+                # For multiple images: "Picture 1: ... Picture 2: ... Picture N: ..."
+                img_prompt_template = "Picture {}: <|vision_start|><|image_pad|><|vision_end|>"
+                base_img_prompt = ""
+                for i in range(len(images)):
+                    base_img_prompt += img_prompt_template.format(i + 1)
+                formatted_text = self.edit_template.format(base_img_prompt + prompt)
+            else:
+                # Regular Edit format: Vision tokens already in template
+                # Just format with user prompt directly
+                formatted_text = self.edit_template.format(prompt)
         print(f"qwen tokenizer with image:{formatted_text}")
 
         # Process images: convert to PIL Images and resize to CONDITION_IMAGE_SIZE
