@@ -34,6 +34,7 @@ class Flux2PromptEncoder:
         max_sequence_length: int,
         hidden_state_layers: tuple[int, ...],
     ) -> mx.array:
+        print(f"final prompt:{prompt},{max_sequence_length}")
         tokens = tokenizer.tokenize(prompt=prompt, max_length=max_sequence_length)
         return text_encoder.get_prompt_embeds(
             input_ids=tokens.input_ids,

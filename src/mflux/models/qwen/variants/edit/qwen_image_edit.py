@@ -75,6 +75,8 @@ class QwenImageEdit(nn.Module):
             height=config.height,
         )
         print(f"qwen generate image:{prompt}")
+#        print(f"qwen generate image negative prompt:{negative_prompt}")
+
         # 2. Encode the prompt
         prompt_embeds, prompt_mask, negative_prompt_embeds, negative_prompt_mask = self._encode_prompts_with_images(
             prompt=prompt,
