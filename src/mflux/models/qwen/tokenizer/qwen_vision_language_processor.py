@@ -92,7 +92,7 @@ class QwenVisionLanguageProcessor:
         else:
             input_ids = None
             attention_mask = None
-        print(f"qwen processor:{text},{input_ids}")
+        print(f"qwen processor:{text},{input_ids.shape()}")
 
         result = {**image_inputs}
         if input_ids is not None:
