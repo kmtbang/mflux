@@ -73,7 +73,6 @@ class QwenVisionLanguageProcessor:
                 padding=padding,
                 return_tensors="pt" if return_tensors == "pt" else "np",
             )
-            print(f"qwen processor:{text},{self.tokenizer.max_length},{padding}")
             if return_tensors == "pt":
                 import torch
 
@@ -93,6 +92,7 @@ class QwenVisionLanguageProcessor:
         else:
             input_ids = None
             attention_mask = None
+        print(f"qwen processor:{text},{input_ids}")
 
         result = {**image_inputs}
         if input_ids is not None:
