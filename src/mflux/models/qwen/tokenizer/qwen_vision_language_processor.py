@@ -77,18 +77,26 @@ class QwenVisionLanguageProcessor:
                 import torch
 
                 if isinstance(text_inputs["input_ids"], torch.Tensor):
-                    input_ids = mx.array(text_inputs["input_ids"].numpy())
-                    attention_mask = mx.array(text_inputs["attention_mask"].numpy())
+                    text_ids = text_inputs["input_ids"].numpy()
+                    attn_mask = text_inputs["attention_mask"].numpy()
                 else:
-                    input_ids = mx.array(text_inputs["input_ids"])
-                    attention_mask = mx.array(text_inputs["attention_mask"])
+                    text_ids = text_inputs["input_ids"]
+                    attn_mask = text_inputs["attention_mask"]     
             else:
                 if isinstance(text_inputs["input_ids"], np.ndarray):
-                    input_ids = mx.array(text_inputs["input_ids"])
-                    attention_mask = mx.array(text_inputs["attention_mask"])
+                    text_ids = text_inputs["input_ids"]
+                    attn_mask = text_inputs["attention_mask"]     
                 else:
-                    input_ids = mx.array(np.array(text_inputs["input_ids"]))
-                    attention_mask = mx.array(np.array(text_inputs["attention_mask"]))
+                    text_ids = np.array(text_inputs["input_ids"])
+                    attn_mask = np.array(text_inputs["attention_mask"])    
+            text_list = text_ids[0].tolist()
+            if len(text_list) % 2 != 0:
+                attn_list = attn_mask[0].tolist()
+                text_ids = np.array([text_list+[text_list[-1]]],dtype = text_ids.dtype)
+                attn_mask = np.array([attn_list+[attn_list[-1]]],dtype= attn_mask.dtype)
+            input_ids = mx.array(text_ids)
+            attention_mask = mx.array(attn_mask)
+
         else:
             input_ids = None
             attention_mask = None
