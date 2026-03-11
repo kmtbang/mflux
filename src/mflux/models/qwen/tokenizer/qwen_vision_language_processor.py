@@ -67,7 +67,7 @@ class QwenVisionLanguageProcessor:
                         else:
                             break
                     text[i] = text[i].replace("<|placeholder|>", self.image_token)
-
+            print(f"final text:{text}")
             text_inputs = self.tokenizer(
                 text,
                 padding=padding,
