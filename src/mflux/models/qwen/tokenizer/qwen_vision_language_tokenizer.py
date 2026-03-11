@@ -70,6 +70,7 @@ class QwenVisionLanguageTokenizer:
             # Regular Edit format: Vision tokens already in template
             # Just format with user prompt directly
             formatted_text = self.edit_template.format(prompt)
+        print(f"qwen tokenizer with image:{formatted_text}")
 
         # Process images: convert to PIL Images and resize to CONDITION_IMAGE_SIZE
         CONDITION_IMAGE_SIZE = 384 * 384
@@ -134,7 +135,7 @@ class QwenVisionLanguageTokenizer:
             truncation=True,
             return_tensors="pt",
         )
-
+        print(f"qwen tokenizer:{self.max_length}")
         # Convert PyTorch tensors to MLX arrays
         input_ids = mx.array(tokens["input_ids"].numpy())
         attention_mask = mx.array(tokens["attention_mask"].numpy())
