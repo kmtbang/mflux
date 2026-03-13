@@ -407,7 +407,7 @@ AVAILABLE_MODELS = {
         controlnet_model=None,
         custom_transformer_model=None,
         num_train_steps=1000,
-        max_sequence_length=512,
+        max_sequence_length=4096,
         supports_guidance=True,
         requires_sigma_shift=True,
         transformer_overrides={
@@ -507,7 +507,7 @@ AVAILABLE_MODELS = {
         controlnet_model=None,
         custom_transformer_model=None,
         num_train_steps=1000,
-        max_sequence_length=512,
+        max_sequence_length=4096,
         supports_guidance=False,  # Turbo model uses guidance_scale=0
         requires_sigma_shift=True,
     ),
