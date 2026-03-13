@@ -349,7 +349,7 @@ AVAILABLE_MODELS = {
         controlnet_model=None,
         custom_transformer_model=None,
         num_train_steps=1000,
-        max_sequence_length=512,
+        max_sequence_length=4096,
         supports_guidance=True,
         requires_sigma_shift=True,
         transformer_overrides={
@@ -445,10 +445,12 @@ AVAILABLE_MODELS = {
         custom_transformer_model=None,
         num_train_steps=None,
         max_sequence_length=None,
-        supports_guidance=None,
-        requires_sigma_shift=None,
-#        sigma_max_shift=0.9,
-#        sigma_max_seq_len=8192,
+        supports_guidance=True,
+        requires_sigma_shift=True,
+        sigma_max_shift=1.15,#0.9,
+        sigma_max_seq_len=4096,#8192,
+        sigma_base_shift = 0.5,#
+        sigma_base_seq_len = 256,
 #        sigma_shift_terminal=0.02,
     ),
     "fibo": ModelConfig(
