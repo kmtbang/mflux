@@ -434,6 +434,8 @@ AVAILABLE_MODELS = {
         requires_sigma_shift=True,
         sigma_max_shift=0.9,
         sigma_max_seq_len=8192,
+        sigma_base_shift = 0.5,#
+        sigma_base_seq_len = 256,#
         sigma_shift_terminal=0.02,
     ),
     "qwen-image-edit": ModelConfig(
@@ -447,11 +449,11 @@ AVAILABLE_MODELS = {
         max_sequence_length=None,
         supports_guidance=True,
         requires_sigma_shift=True,
-        sigma_max_shift=1.15,#0.9,
-        sigma_max_seq_len=4096,#8192,
+        sigma_max_shift=0.9,
+        sigma_max_seq_len=8192,
         sigma_base_shift = 0.5,#
-        sigma_base_seq_len = 256,
-#        sigma_shift_terminal=0.02,
+        sigma_base_seq_len = 256,#
+        sigma_shift_terminal=0.02,
     ),
     "fibo": ModelConfig(
         priority=17,
